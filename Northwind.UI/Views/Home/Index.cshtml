@@ -1,0 +1,57 @@
+﻿@using Northwind.UI.Models;
+@using System.Web.Helpers;
+@{
+    @model CustomerListViewModel
+    ViewBag.Title = "Customers";
+    WebGrid grid = new WebGrid(Model.Customers, canSort: true, canPage: true, rowsPerPage: 20, selectionFieldName: "CustomerID");
+}
+
+
+<style type="text/css">
+    .webGrid {
+        margin: 4px;
+        border-collapse: collapse;
+        width: 500px;
+        background-color: #B4CFC3;
+    }
+
+    .header {
+        background-color: #C1D4E6;
+        font-weight: bold;
+        color: #FFF;
+    }
+
+    .webGrid th, .webGrid td {
+        border: 1px solid #C0C0C0;
+        padding: 5px;
+    }
+
+    .alt {
+        background-color: #E4E9F5;
+        color: #000;
+    }
+
+    .gridHead a:hover {
+        text-decoration: underline;
+    }
+
+    .description {
+        width: auto;
+    }
+
+    .select {
+        background-color: #71857C;
+    }
+</style>
+<h2>Customers</h2>
+<form method="get" action="/Home/Index">
+    <label for="filterInput">Filter by customer name</label>
+    <input id="filterInput" type="text" name="customerName" />
+    <button type="submit">Filter</button>
+</form>
+<div>
+    @grid.GetHtml(tableStyle: "webGrid", headerStyle: "header", alternatingRowStyle: "alt", selectedRowStyle: "select",
+    columns: grid.Columns(
+        grid.Column("ContactName", "Name", format: @<text>@Html.ActionLink((string)item.ContactName, "Details", new { customerID = item.CustomerID }) </text>),
+                    grid.Column("OrderCount", "Orders", style: "description")))
+</div>

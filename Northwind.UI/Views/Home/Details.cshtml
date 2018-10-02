@@ -1,0 +1,49 @@
+﻿@using Northwind.UI.Models
+@using System.Linq
+@{
+    @model CustomerViewModel
+    ViewBag.Title = "Details";
+    double count = 0;
+}
+<div class="container">
+    <h2>@Model.Form.ContactName</h2>
+    <h3>Customer details</h3>
+    <p>
+        <div>
+            <span>Company Name:</span>
+            <span>@Model.Form.CompanyName</span>
+        </div>
+        <div>
+            <span>Contact Title:</span>
+            <span>@Model.Form.ContactTitle</span>
+        </div>
+        <div>
+            <span>Adress:</span>
+            <span>@Model.Form.Address , @Model.Form.City , @Model.Form.Region , @Model.Form.Country , @Model.Form.PostalCode</span>
+        </div>
+        <div>
+            <span>Contact info:</span>
+            <span>@Model.Form.Phone , @Model.Form.Fax</span>
+        </div>
+        @foreach (Order order in Model.Form.Orders.OrderBy(x => x.OrderDate))
+        {
+
+            <div>
+                <span>@order.OrderDate:</span>
+                <span>Total price: @order.TotalPrice</span>
+            </div>
+            if (@order.HasDiscontinuedProduct)
+            {
+                <div>
+                    <span class="ui-icon-notice">One or more products are discontinued</span>
+                </div>
+            }
+            if (@order.HasInsufficientQuantity)
+            {
+                <div>
+                    <span class="ui-icon-notice">Products ordered are more than in stock</span>
+                </div>
+            }
+        }
+    </p>
+</div>
