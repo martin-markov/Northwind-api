@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
 
@@ -21,35 +22,28 @@ namespace Northwind.API.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Customer> GetAll(string includeProps="")
+        public IEnumerable<Customer> GetAll()
         {
-            if (!String.IsNullOrEmpty(includeProps))
-            {
-                return db.Customers.Include(includeProps);
-            }
-            else
-            {
-                return db.Customers;
-            }
-            
+            return db.Customers.Include(c=>c.Orders);
         }
+
         public Customer GetById(string id)
         {
             return db.Customers.FirstOrDefault(c => c.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public Customer GetCustomerOrders(string id)
+        public IEnumerable<Order> GetCustomerOrders(string id)
         {
-            return db.Customers.Include(typeof(Order).Name).FirstOrDefault(m => m.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            return db.Orders.Include(o=>o.Order_Details.Select(x=>x.Product)).Where(m => m.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if(!this.disposed)
             {
-                if (disposing)
+                if(disposing)
                 {
                     db.Dispose();
                 }

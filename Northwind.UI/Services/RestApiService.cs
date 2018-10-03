@@ -10,14 +10,16 @@ using System.Threading.Tasks;
 
 namespace Northwind.UI.Services
 {
-    public class RestApiService : HttpClient
+    public class RestApiService : IDisposable
     {
         private HttpClient _httpClient;
         public RestApiService(string host, string mediaTypeHeaderValue)
         {
 
-            this._httpClient = new HttpClient();
-            this._httpClient.BaseAddress = new Uri(host);
+            this._httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(host)
+            };
             this._httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaTypeHeaderValue));
         }
 
@@ -55,6 +57,18 @@ namespace Northwind.UI.Services
         /// <summary>
         /// Creates a GET request.
         /// </summary>
+        /// <param name="queryString">Relative path query string with parameters.</param>
+        /// <returns></returns>
+        public async Task<string> GetJsonAsync(string queryString)
+        {
+            HttpResponseMessage response = await this._httpClient.GetAsync(queryString);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            return responseContent;
+        }
+
+        /// <summary>
+        /// Creates a GET request.
+        /// </summary>
         /// <param name="path">Resource relative path.</param>
         /// <param name="queryParameters">Contains the parameters which will be added to the query string.</param>
         /// <returns></returns>
@@ -78,6 +92,26 @@ namespace Northwind.UI.Services
             }
 
             return await GetAsync(strb.ToString());
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!this.disposed)
+            {
+                if(disposing)
+                {
+                    _httpClient.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

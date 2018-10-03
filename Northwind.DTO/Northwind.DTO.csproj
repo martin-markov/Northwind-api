@@ -40,7 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomerDTO.cs" />
-    <Compile Include="CustomerOrderDTO.cs" />
+    <Compile Include="CustomerOrdersInfoDTO.cs" />
+    <Compile Include="OrderDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

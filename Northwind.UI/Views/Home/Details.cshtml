@@ -6,26 +6,26 @@
     double count = 0;
 }
 <div class="container">
-    <h2>@Model.Form.ContactName</h2>
+    <h2>@Model.CustomerInfo.ContactName</h2>
     <h3>Customer details</h3>
     <p>
         <div>
             <span>Company Name:</span>
-            <span>@Model.Form.CompanyName</span>
+            <span>@Model.CustomerInfo.CompanyName</span>
         </div>
         <div>
             <span>Contact Title:</span>
-            <span>@Model.Form.ContactTitle</span>
+            <span>@Model.CustomerInfo.ContactTitle</span>
         </div>
         <div>
             <span>Adress:</span>
-            <span>@Model.Form.Address , @Model.Form.City , @Model.Form.Region , @Model.Form.Country , @Model.Form.PostalCode</span>
+            <span>@Model.CustomerInfo.Address , @Model.CustomerInfo.City , @Model.CustomerInfo.Region , @Model.CustomerInfo.Country , @Model.CustomerInfo.PostalCode</span>
         </div>
         <div>
             <span>Contact info:</span>
-            <span>@Model.Form.Phone , @Model.Form.Fax</span>
+            <span>@Model.CustomerInfo.Phone , @Model.CustomerInfo.Fax</span>
         </div>
-        @foreach (Order order in Model.Form.Orders.OrderBy(x => x.OrderDate))
+        @foreach (var order in Model.CustomerOrders.OrderBy(x => x.OrderDate))
         {
 
             <div>

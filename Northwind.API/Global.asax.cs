@@ -14,17 +14,7 @@ namespace Northwind.API
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            ConfigureAutomaper();
-        }
-
-        private void ConfigureAutomaper()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Customer, CustomerDTO>().ForMember(dest => dest.OrderCount, opt => opt.MapFrom(src => src.Orders.Count())).ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.CustomerID));
-                
-            }
-            );
+            MapperConfig.MapEntitiesToDTO();
         }
     }
 }

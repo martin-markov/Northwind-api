@@ -8,8 +8,8 @@ namespace Northwind.API.Repositories
 {
     public interface ICustomerRepository : IDisposable 
     {
-        IEnumerable<Customer> GetAll(string includeProps="");
+        IEnumerable<Customer> GetAll();
         Customer GetById(string id);
-        Customer GetCustomerOrders(string id);
+        IEnumerable<Order> GetCustomerOrders(string id);
     }
 }

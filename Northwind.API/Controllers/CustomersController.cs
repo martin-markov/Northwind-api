@@ -12,48 +12,53 @@ using Northwind.API;
 using Northwind.API.Repositories;
 using Northwind.DTO;
 using AutoMapper;
+using Northwind.API.Services;
 
 namespace Northwind.API.Controllers
 {
     public class CustomersController : ApiController
     {
-        private ICustomerRepository _repo;
+        private ICustomerService service;
 
         public CustomersController()
         {
-            _repo = new CustomerRepository();
+            service = new CustomerService();
         }
-
-        public CustomersController(ICustomerRepository repo)
+        //DI
+        public CustomersController(ICustomerService service)
         {
-            _repo = repo;
+            this.service = service;
         }
 
         // GET api/Customers
-        public IEnumerable<CustomerDTO> GetCustomers(string includeProps="")
+        public IEnumerable<CustomerDTO> GetCustomers()
         {
-            IEnumerable<Customer> customers = _repo.GetAll(includeProps);
-            IEnumerable<CustomerDTO> customersDTO = Mapper.Map<IEnumerable<CustomerDTO>>(customers);
-            return customersDTO;
-
+            return service.GetAll();
         }
 
         // GET api/Customers/5
         [ResponseType(typeof(Customer))]
         public IHttpActionResult GetCustomer(string id)
         {
-            Customer customer = _repo.GetById(id);
-
+            CustomerDTO customer = service.GetById(id);
             return Ok(customer);
         }
 
         [Route("api/Customers/{id}/Orders")]
-        [ResponseType(typeof(CustomerDTO))]
+        [ResponseType(typeof(IEnumerable<OrderDTO>))]
         public IHttpActionResult GetCustomerOrders(string id)
         {
-            Customer customer = _repo.GetCustomerOrders(id);
+            IEnumerable<OrderDTO> orders = service.GetCustomerOrders(id);
+            return Ok(orders);
+        }
 
-            return Ok(customer);
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                service.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
