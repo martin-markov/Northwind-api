@@ -11,29 +11,28 @@ namespace Northwind.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private CustomersService _customersService;
-        public CustomersService CustomersService
+        private ICustomerService customersService;
+        public HomeController()
         {
-            get
-            {
-                if (_customersService == null)
-                    _customersService = new CustomersService();
-                return _customersService;
-            }
+            this.customersService = new CustomersService();
+        }
+
+        public HomeController(ICustomerService customerService)
+        {
+            this.customersService = customerService;
         }
 
         public async Task<ActionResult> Index(string customerName = "")
         {
-            CustomerListViewModel model = await this.CustomersService.GetCustomers(customerName);
+            CustomerListViewModel model = await this.customersService.GetCustomers(customerName);
             return View(model);
         }
 
         public async Task<ActionResult> Details(string customerID)
         {
-            if (String.IsNullOrEmpty(customerID))
-                HttpNotFound();
-
-            CustomerViewModel model = await this.CustomersService.GetCustomerDetails(customerID);
+            CustomerViewModel model = await this.customersService.GetCustomerDetails(customerID);
+            if (model == null || model.CustomerInfo == null)
+                return HttpNotFound();
             return View(model);
         }
 

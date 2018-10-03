@@ -2,48 +2,56 @@
 @using System.Linq
 @{
     @model CustomerViewModel
-    ViewBag.Title = "Details";
-    double count = 0;
+    ViewBag.Title = Model.CustomerInfo.ContactName;
 }
 <div class="container">
     <h2>@Model.CustomerInfo.ContactName</h2>
-    <h3>Customer details</h3>
-    <p>
+    <div>
+        <h4>Customer details</h4>
         <div>
-            <span>Company Name:</span>
-            <span>@Model.CustomerInfo.CompanyName</span>
+            <div class="row">
+                <strong>Company Name:</strong>
+                <span>@Model.CustomerInfo.CompanyName</span>
+            </div>
+            <div class="row">
+                <strong>Contact Title:</strong>
+                <span>@Model.CustomerInfo.ContactTitle</span>
+            </div>
+            <div class="row">
+                <i class="glyphicon glyphicon-bell"></i>
+                <strong>Adress:</strong>
+                <span>@Model.CustomerInfo.Address, @Model.CustomerInfo.City, @Model.CustomerInfo.Country, @Model.CustomerInfo.PostalCode</span>
+            </div>
+            <div class="row">
+                <i class="glyphicon glyphicon-phone"></i>
+                <strong>Contact info:</strong>
+                <span>@Model.CustomerInfo.Phone, @Model.CustomerInfo.Fax</span>
+            </div>
         </div>
-        <div>
-            <span>Contact Title:</span>
-            <span>@Model.CustomerInfo.ContactTitle</span>
-        </div>
-        <div>
-            <span>Adress:</span>
-            <span>@Model.CustomerInfo.Address , @Model.CustomerInfo.City , @Model.CustomerInfo.Region , @Model.CustomerInfo.Country , @Model.CustomerInfo.PostalCode</span>
-        </div>
-        <div>
-            <span>Contact info:</span>
-            <span>@Model.CustomerInfo.Phone , @Model.CustomerInfo.Fax</span>
-        </div>
-        @foreach (var order in Model.CustomerOrders.OrderBy(x => x.OrderDate))
+    </div>
+    <div>
+        <h4>Orders</h4>
+        @foreach (var order in Model.CustomerOrders.OrderByDescending(x => x.OrderDate))
         {
 
-            <div>
-                <span>@order.OrderDate:</span>
-                <span>Total price: @order.TotalPrice</span>
+            <div class="row">
+                <i class="glyphicon glyphicon-credit-card"></i>
+                <span>@order.OrderDate.Value.ToShortDateString():</span>
+                <span>Total price: @(Math.Floor(order.TotalPrice * 100)/100)</span>
             </div>
             if (@order.HasDiscontinuedProduct)
             {
-                <div>
-                    <span class="ui-icon-notice">One or more products are discontinued</span>
+                <div class="alert alert-warning" role="alert">
+                    <strong>Attention!</strong> One or more products are discontinued!
                 </div>
+                //<div class="alert alert-info" role="alert">One or more products are discontinued</div>
             }
             if (@order.HasInsufficientQuantity)
             {
-                <div>
-                    <span class="ui-icon-notice">Products ordered are more than in stock</span>
+                <div class="alert alert-warning" role="alert">
+                    <strong>Attention!</strong> Products ordered are more than in stock!
                 </div>
             }
         }
-    </p>
+    </div>
 </div>

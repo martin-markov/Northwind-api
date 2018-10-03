@@ -22,7 +22,7 @@ namespace Northwind.DTO
         public string ShipCountry { get; set; }
 
         public int ProductCount { get; set; }
-        public float TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public bool HasDiscontinuedProduct { get; set; }
         public bool HasInsufficientQuantity { get; set; }
 

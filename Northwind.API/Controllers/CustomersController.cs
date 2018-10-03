@@ -37,7 +37,7 @@ namespace Northwind.API.Controllers
         }
 
         // GET api/Customers/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerDTO))]
         public IHttpActionResult GetCustomer(string id)
         {
             CustomerDTO customer = service.GetById(id);

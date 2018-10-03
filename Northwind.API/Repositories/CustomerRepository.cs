@@ -4,6 +4,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
+using Northwind.API.Models;
 
 namespace Northwind.API.Repositories
 {
@@ -16,7 +17,7 @@ namespace Northwind.API.Repositories
             this.db = new NorthwindContext();
         }
 
-        //dependecy injection
+        //DI
         public CustomerRepository(NorthwindContext db)
         {
             this.db = db;

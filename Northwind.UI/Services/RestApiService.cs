@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,14 +14,16 @@ namespace Northwind.UI.Services
     public class RestApiService : IDisposable
     {
         private HttpClient _httpClient;
-        public RestApiService(string host, string mediaTypeHeaderValue)
+        public RestApiService()
         {
+            string host = ConfigurationManager.AppSettings["ApiBaseUrl"];
+            string apiResponseType = ConfigurationManager.AppSettings["ApiResponseType"];
 
             this._httpClient = new HttpClient
             {
                 BaseAddress = new Uri(host)
             };
-            this._httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaTypeHeaderValue));
+            this._httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(apiResponseType));
         }
 
         private async Task<HttpResponseMessage> PostJsonAsync(string path, string jsonString)

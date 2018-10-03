@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Northwind.API.Models;
 using Northwind.API.Repositories;
 using Northwind.DTO;
 using System;
