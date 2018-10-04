@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Northwind.API.Models;
+﻿using AutoMapper.QueryableExtensions;
 using Northwind.API.Repositories;
 using Northwind.DTO;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Northwind.API.Services
 {
@@ -23,25 +20,21 @@ namespace Northwind.API.Services
             _repo = repo;
         }
 
-        public IEnumerable<CustomerDTO> GetAll()
+        public IQueryable<CustomerDTO> GetAll()
         {
-            IEnumerable<Customer> customers = _repo.GetAll();
-            IEnumerable<CustomerDTO> customersDTO = Mapper.Map<IEnumerable<CustomerDTO>>(customers);
+            IQueryable<CustomerDTO> customersDTO = _repo.GetAll().ProjectTo<CustomerDTO>("Order");
             return customersDTO;
         }
 
-        public CustomerDTO GetById(string id)
+        public IQueryable<CustomerDTO> GetById(string id)
         {
-            Customer customer = _repo.GetById(id);
-            CustomerDTO customersDTO = Mapper.Map<CustomerDTO>(customer);
-
-            return customersDTO;
+            IQueryable<CustomerDTO> customerDTO = _repo.GetById(id).ProjectTo<CustomerDTO>();
+            return customerDTO;
         }
 
-        public IEnumerable<OrderDTO> GetCustomerOrders(string id)
+        public IQueryable<OrderDTO> GetCustomerOrders(string id)
         {
-            IEnumerable<Order> orders = _repo.GetCustomerOrders(id);
-            IEnumerable<OrderDTO> ordersDTO = Mapper.Map<IEnumerable<OrderDTO>>(orders);
+            IQueryable<OrderDTO> ordersDTO = _repo.GetCustomerOrders(id).ProjectTo<OrderDTO>();
             return ordersDTO;
         }
 

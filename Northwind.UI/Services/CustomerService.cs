@@ -1,14 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Northwind.DTO;
 using Northwind.UI.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 
 
 namespace Northwind.UI.Services
@@ -25,7 +21,7 @@ namespace Northwind.UI.Services
             }
             if(!String.IsNullOrEmpty(customerName))
             {
-                vm.Customers = vm.Customers.Where(c => c.ContactName.Contains(customerName));
+                vm.Customers = vm.Customers.Where(c => c.ContactName.ToUpper().Contains(customerName.ToUpper()));
             }
             return vm;
         }

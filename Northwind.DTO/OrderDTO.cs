@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Northwind.DTO
 {
@@ -22,7 +18,7 @@ namespace Northwind.DTO
         public string ShipCountry { get; set; }
 
         public int ProductCount { get; set; }
-        public decimal TotalPrice { get; set; }
+        public float TotalPrice { get; set; }
         public bool HasDiscontinuedProduct { get; set; }
         public bool HasInsufficientQuantity { get; set; }
 

@@ -1,18 +1,9 @@
-﻿using System;
+﻿using Northwind.API.Services;
+using Northwind.DTO;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Northwind.API;
-using Northwind.API.Repositories;
-using Northwind.DTO;
-using AutoMapper;
-using Northwind.API.Services;
 
 namespace Northwind.API.Controllers
 {
@@ -31,7 +22,7 @@ namespace Northwind.API.Controllers
         }
 
         // GET api/Customers
-        public IEnumerable<CustomerDTO> GetCustomers()
+        public IQueryable<CustomerDTO> GetCustomers()
         {
             return service.GetAll();
         }
@@ -40,10 +31,11 @@ namespace Northwind.API.Controllers
         [ResponseType(typeof(CustomerDTO))]
         public IHttpActionResult GetCustomer(string id)
         {
-            CustomerDTO customer = service.GetById(id);
-            return Ok(customer);
+            IQueryable<CustomerDTO> customer = service.GetById(id);
+            return Ok(customer.First());
         }
 
+        // GET api/Customers/5/Orders
         [Route("api/Customers/{id}/Orders")]
         [ResponseType(typeof(IEnumerable<OrderDTO>))]
         public IHttpActionResult GetCustomerOrders(string id)

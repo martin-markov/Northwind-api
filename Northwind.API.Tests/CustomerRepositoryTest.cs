@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Moq;
+﻿using Moq;
+using Northwind.API.Models;
 using Northwind.API.Repositories;
 using Northwind.API.Services;
-using Northwind.API.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Northwind.API.Tests
@@ -13,7 +12,7 @@ namespace Northwind.API.Tests
     [TestFixture]
     public class CustomerRepositoryTest
     {
-        protected IEnumerable<Customer> customersSample;
+        protected IQueryable<Customer> customersSample;
 
         [OneTimeSetUp]
         protected void Initialize()
@@ -39,12 +38,12 @@ namespace Northwind.API.Tests
         {
             string customerId = customersSample.FirstOrDefault().CustomerID;
             Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
-            mock.Setup(m => m.GetById(customerId)).Returns(customersSample.FirstOrDefault(x => x.CustomerID == customerId));
+            mock.Setup(m => m.GetById(customerId)).Returns(customersSample.Where(x => x.CustomerID == customerId));
 
             CustomerService service = new CustomerService(mock.Object);
             var result = service.GetById(customerId);
             Assert.IsNotNull(result);
-            Assert.AreEqual(customerId, result.CustomerID);
+            Assert.AreEqual(customerId, result.First().CustomerID);
         }
 
         [Test]
@@ -52,14 +51,14 @@ namespace Northwind.API.Tests
         {
             string customerId = customersSample.FirstOrDefault().CustomerID;
             Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
-            mock.Setup(m => m.GetCustomerOrders(customerId)).Returns(customersSample.FirstOrDefault().Orders);
+            mock.Setup(m => m.GetCustomerOrders(customerId)).Returns(customersSample.FirstOrDefault().Orders.AsQueryable());
 
             CustomerService service = new CustomerService(mock.Object);
             var result = service.GetCustomerOrders(customerId);
             Assert.IsTrue(result.Any(x => x.HasDiscontinuedProduct));
         }
 
-        private IEnumerable<Customer> GetCustomersSampleList()
+        private IQueryable<Customer> GetCustomersSampleList()
         {
             List<Customer> temp = new List<Customer>()
             {
@@ -133,7 +132,7 @@ namespace Northwind.API.Tests
                     }
                 }
             };
-            return temp.AsEnumerable();
+            return temp.AsQueryable();
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Northwind.API.Models;
+using System;
 using System.Data.Entity;
-using System.Web;
-using System.Web.Http;
-using Northwind.API.Models;
+using System.Linq;
 
 namespace Northwind.API.Repositories
 {
@@ -23,17 +20,17 @@ namespace Northwind.API.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IQueryable<Customer> GetAll()
         {
-            return db.Customers.Include(c=>c.Orders);
+            return db.Customers;
         }
 
-        public Customer GetById(string id)
+        public IQueryable<Customer> GetById(string id)
         {
-            return db.Customers.FirstOrDefault(c => c.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            return db.Customers.Where(c => c.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<Order> GetCustomerOrders(string id)
+        public IQueryable<Order> GetCustomerOrders(string id)
         {
             return db.Orders.Include(o=>o.Order_Details.Select(x=>x.Product)).Where(m => m.CustomerID.Equals(id, StringComparison.InvariantCultureIgnoreCase));
         }

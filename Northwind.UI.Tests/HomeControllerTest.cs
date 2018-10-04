@@ -1,12 +1,11 @@
-﻿using System;
-using Northwind.UI.Controllers;
-using Moq;
-using Northwind.UI.Services;
-using Northwind.UI.Models;
+﻿using Moq;
 using Northwind.DTO;
+using Northwind.UI.Controllers;
+using Northwind.UI.Models;
+using Northwind.UI.Services;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
