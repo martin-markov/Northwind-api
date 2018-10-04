@@ -38,7 +38,7 @@ namespace Northwind.API.Tests
         {
             string customerId = customersSample.FirstOrDefault().CustomerID;
             Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
-            mock.Setup(m => m.GetById(customerId)).Returns(customersSample.Where(x => x.CustomerID == customerId));
+            mock.Setup(m => m.GetById(It.IsAny<string>())).Returns(customersSample.Where(x => x.CustomerID == customerId));
 
             CustomerService service = new CustomerService(mock.Object);
             var result = service.GetById(customerId);
@@ -51,7 +51,7 @@ namespace Northwind.API.Tests
         {
             string customerId = customersSample.FirstOrDefault().CustomerID;
             Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
-            mock.Setup(m => m.GetCustomerOrders(customerId)).Returns(customersSample.FirstOrDefault().Orders.AsQueryable());
+            mock.Setup(m => m.GetCustomerOrders(It.IsAny<string>())).Returns(customersSample.FirstOrDefault().Orders.AsQueryable());
 
             CustomerService service = new CustomerService(mock.Object);
             var result = service.GetCustomerOrders(customerId);

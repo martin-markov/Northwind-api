@@ -21,10 +21,10 @@ namespace Northwind.UI.Tests
             CustomerViewModel model = new CustomerViewModel();
             model.CustomerInfo = null;
             Mock<ICustomerService> mock = new Mock<ICustomerService>();
-            mock.Setup(m => m.GetCustomerDetails("A")).Returns(Task.FromResult(model));
+            mock.Setup(m => m.GetCustomerDetails(It.IsAny<string>())).Returns(Task.FromResult(model));
             var controller = new HomeController(mock.Object);
 
-            ActionResult result = await controller.Details("ASDF");
+            ActionResult result = await controller.Details(It.IsAny<string>());
 
             Assert.IsInstanceOf<HttpNotFoundResult>(result);
         }
@@ -34,10 +34,10 @@ namespace Northwind.UI.Tests
         {
             CustomerViewModel model = GetSampleCustomer();
             Mock<ICustomerService> mock = new Mock<ICustomerService>();
-            mock.Setup(m => m.GetCustomerDetails("ASDF")).Returns(Task.FromResult(model));
+            mock.Setup(m => m.GetCustomerDetails(It.IsAny<string>())).Returns(Task.FromResult(model));
             var controller = new HomeController(mock.Object);
 
-            ActionResult result = await controller.Details("ASDF");
+            ActionResult result = await controller.Details(It.IsAny<string>());
             Assert.IsInstanceOf<ViewResult>(result);
             ViewResult viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult.Model);

@@ -25,7 +25,7 @@ namespace Northwind.API.Tests
             }.AsQueryable();
             CustomerDTO customer = customers.First();
             Mock<ICustomerService> mock = new Mock<ICustomerService>();
-            mock.Setup(m => m.GetById(customer.CustomerID)).Returns(customers);
+            mock.Setup(m => m.GetById(It.IsAny<string>())).Returns(customers);
 
             CustomersController controller = new CustomersController(mock.Object);
             IHttpActionResult response = controller.GetCustomer(customer.CustomerID);
